@@ -48,7 +48,7 @@ const handleSendInterview = async (appId) => {
             </p>
             <p style={{ marginTop: "0.5rem" }}>
               <a
-                href={`http://localhost:5000/uploads/${app.resumeFile}`}
+                href={`https://jobboard-backend-p2ya.onrender.com/uploads/${app.resumeFile}`}
                 target="_blank"
                 rel="noreferrer"
               >
