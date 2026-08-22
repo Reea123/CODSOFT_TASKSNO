@@ -3,6 +3,23 @@ import { Link } from 'react-router-dom';
 import api from '../api/axios';
 
 const EmployerDashboard = () => {
+  const [blogData, setBlogData] = useState({ title: '', content: '' });
+  const [blogMessage, setBlogMessage] = useState('');
+
+  const handleBlogChange = (e) => setBlogData({ ...blogData, [e.target.name]: e.target.value });
+
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault();
+    setBlogMessage('');
+    try {
+      await api.post('/blogs', blogData);
+      setBlogMessage('Blog post published!');
+      setBlogData({ title: '', content: '' });
+    } catch (err) {
+      setBlogMessage(err.response?.data?.message || 'Failed to publish');
+    }
+  };
+
   const [jobs, setJobs] = useState([]);
   const [formData, setFormData] = useState({
     title: '', description: '', company: '', location: '', category: '', salary: ''
@@ -98,14 +115,24 @@ const EmployerDashboard = () => {
         </form>
       </div>
 
+      <div className="card" style={{ marginBottom: '2rem' }}>
+        <h2>Write a Blog Post</h2>
+        {blogMessage && <p className="success-text">{blogMessage}</p>}
+        <form onSubmit={handleBlogSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          <input name="title" placeholder="Post Title" value={blogData.title} onChange={handleBlogChange} required />
+          <textarea name="content" placeholder="Write your post..." value={blogData.content} onChange={handleBlogChange} rows={5} required />
+          <button type="submit" style={{ alignSelf: 'flex-start' }}>Publish Post</button>
+        </form>
+      </div>
+
       <h2>Your Posted Jobs</h2>
-      {jobs.length === 0 && <p style={{ color: '#6b7280' }}>You haven't posted any jobs yet.</p>}
+      {jobs.length === 0 && <p style={{ color: '#94a3b8' }}>You haven't posted any jobs yet.</p>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
         {jobs.map((job) => (
           <div key={job._id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
             <div>
               <h3>{job.title}</h3>
-              <p style={{ color: '#6b7280' }}>{job.company} — {job.location}</p>
+              <p style={{ color: '#94a3b8' }}>{job.company} — {job.location}</p>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <Link to={`/employer/jobs/${job._id}/applicants`}>
