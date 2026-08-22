@@ -23,5 +23,13 @@ app.get('/', (req, res) => {
   res.send('Job Board API running');
 });
 
+// Global error handler - catches errors from multer, cloudinary, and other middleware
+app.use((err, req, res, next) => {
+  console.error('Global error handler caught:', err.message);
+  console.error(err.stack);
+  res.status(500).json({ message: err.message || 'Internal Server Error' });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
