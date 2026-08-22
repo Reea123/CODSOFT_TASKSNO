@@ -76,7 +76,7 @@ const JobApplicants = () => {
 
               <p style={{ marginTop: "0.75rem" }}>
                 <a
-                  href={`https://jobboard-backend-p2ya.onrender.com/uploads/${app.resumeFile}`}
+                  href={app.resumeFile}
                   target="_blank"
                   rel="noreferrer"
                 >

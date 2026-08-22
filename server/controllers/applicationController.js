@@ -20,7 +20,7 @@ const applyToJob = async (req, res) => {
     const application = await Application.create({
       job: jobId,
       candidate: req.user.id,
-      resumeFile: req.file.filename,
+      resumeFile: req.file.path,
       coverLetter
     });
 
